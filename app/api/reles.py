@@ -3,10 +3,10 @@ import datetime
 from connexion import NoContent
 
 reles = [
-    {'id': 1, 'status': True},
-    {'id': 2, 'status': False},
-    {'id': 3, 'status': False},
-    {'id': 4, 'status': False},
+    {'id': 1, 'status': True, 'gpio':14},
+    {'id': 2, 'status': False, 'gpio':14},
+    {'id': 3, 'status': False, 'gpio':14},
+    {'id': 4, 'status': False, 'gpio':14},
 ]
 
 

@@ -2,12 +2,16 @@ import datetime
 
 from connexion import NoContent
 
+import serial
+import json
+
+
 condicao = {
     "dht11":
         {
-            "humidade": 70.9,
-            "temperatura": 17.1,
-            "temperatura_sensacao": 16.72
+            "humidade": 1.0,
+            "temperatura": 11.1,
+            "temperatura_sensacao": 11.1
         },
     "dht122":
         {
@@ -30,8 +34,16 @@ condicao = {
 }
 
 def get():
+    condicao = get_temperatura()
     return condicao, 200
 
+def get_temperatura():
+    comunicacao = serial.Serial('/dev/ttyUSB0', 9600)
+    try:
+        condicao = comunicacao.readline().decode('utf-8')
+    except (OSError, serial.SerialException):
+        pass
+    return condicao
 
 def post(body):
     name = body.get("name")
@@ -54,5 +66,7 @@ def delete(id_):
     return NoContent, 204
 
 
+
 def search():
+    condicao = get_temperatura()
     return condicao,200
