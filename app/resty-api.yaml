@@ -1,0 +1,114 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: controle de temperatura com swagger
+servers:
+  - url: http://localhost:9090/v1.0
+paths:
+  /reles:
+    get:
+      summary: Retorna lista de reles do sistema
+      tags:
+        - lista reles
+        - reles
+      responses:
+        '200':
+          description: lista de reles
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/Reles"
+  /reles/{releID}:
+    get:
+      summary: Acesso aos controles de rele para iluminacao
+      tags:
+        - iluminacao
+        - rele
+        - controle acesso
+      parameters:
+        - name: releID
+          in: path
+          required: false
+          description: o id do rele selecionado
+          schema:
+            type: string
+      responses:
+        '200':
+          description: array com resposta boleano se o rele especifico esta ligado ou desligado
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/Reles"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    put:
+      summary: Atualiza o status dos reles conforme releID, no rasp
+      parameters:
+        - name: releID
+          in: path
+          required: true
+          description: o id do rele selecionado
+          schema:
+            type: string
+      responses:
+        '201':
+          description: atualizou com sucesso o status do rele
+  /temperatura:
+    get:
+      summary: Condicao de tempo no momento ligando diretamente o arduino
+      tags:
+        - temperatura
+        - tempo na malhada
+      responses:
+        '200':
+          description: array com dados de temperatura, humidade etc, no momento
+          content:
+            appication/json:
+              schema:
+                $ref: "#/components/schemas/Temperatura"
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      summary: salva condicao do tempo port tempo especifico em mongodb
+      responses:
+        '201':
+          description: salvou em mongodb a condição atual
+    delete:
+      summary: deleta registros por _id
+      responses:
+        '204':
+          description: deleta os _ids enviados
+
+components:
+  schemas:
+    Reles:
+      properties:
+        id:
+          readOnly: true
+          type: integer
+        status:
+          type: string
+    Temperatura:
+      properties:
+        dht11:
+          type: array
+        dht22:
+          type: array
+    Error:
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string

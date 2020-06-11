@@ -13,6 +13,8 @@
 @email carlosclaro79@gmail.com
 # 
 
+run app/resty.py
+
 Armazenar dados coletados em arduino e raspberry pi gpio
 em banco de dados MongoDB.
 Servir dados via api para graficos armazenados em tabela 
